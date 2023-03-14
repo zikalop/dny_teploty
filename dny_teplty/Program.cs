@@ -9,7 +9,7 @@ var poolOfMonths = AnsiConsole.Prompt(
 string[] month30 = { "Duben", "Červen", "Žáří", "Listopad" };
 string[] month31 = { "Leden", "Březen", "Květen", "Říjen", "Prosinec" };
 string[] month28 ={"Únor"};
-
+Console.WriteLine();
 bool enblLoop = true;
 
 int nbrdays1 = 30;
