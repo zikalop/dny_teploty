@@ -2,7 +2,7 @@
 
 var poleMesicu = AnsiConsole.Prompt(  //vytvoří tabulky s měsíci
     new SelectionPrompt<string>()
-        .Title("string s otázkou nebo nadpis")
+        .Title("Vyber měsíc kdy si pamatuješ teploty")
         .PageSize(10)
         .MoreChoicesText("[grey]Měsíce vyber šipkamy[/]")
         .AddChoices("Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"));
@@ -43,9 +43,9 @@ while (cyklus) //vytvori cyklus na zapis teplot k dnum
 
     if (cisalDnu == "Statistiky teplot")
     {
-        Console.WriteLine($"Minimální teplota je {teploty.Min()}");
-        Console.WriteLine($"Maximální teplota je {teploty.Max()}");   //vytvoři statistiky pro zadané teploty a ukončí cyklus
-        Console.WriteLine($"Průměrná teplota je{teploty.Average()}");
+        Console.WriteLine($"Minimální teplota je {teploty.Min()}°C");
+        Console.WriteLine($"Maximální teplota je {teploty.Max()}°C");   //vytvoři statistiky pro zadané teploty a ukončí cyklus
+        Console.WriteLine($"Průměrná teplota je {teploty.Average()}°C");
         cyklus = false;
         break;
     }
