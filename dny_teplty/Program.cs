@@ -1,85 +1,56 @@
 ﻿using Spectre.Console;
-var poolOfMonths = AnsiConsole.Prompt(
+
+var poleMesicu = AnsiConsole.Prompt(  //vytvoří tabulky s měsíci
     new SelectionPrompt<string>()
         .Title("string s otázkou nebo nadpis")
         .PageSize(10)
         .MoreChoicesText("[grey]Měsíce vyber šipkamy[/]")
-        .AddChoices("Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec" ));
+        .AddChoices("Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"));
 
-string[] month30 = { "Duben", "Červen", "Žáří", "Listopad" };
-string[] month31 = { "Leden", "Březen", "Květen", "Říjen", "Prosinec" };
-string[] month28 ={"Únor"};
+string[] mesic30 = { "Duben", "Červen", "Žáří", "Listopad" };
+string[] mesic31 = { "Leden", "Březen", "Květen", "Říjen", "Prosinec" };
+string[] mesic28 = { "Únor" };
 
-bool enblLoop = true;
+bool cyklus = true;
+int pocetDnu = 0;
 
-int nbrdays1 = 30;
-var days1 = new List<string>();
-for (int i = 1; i <= nbrdays1; i++) days1.Add($"{i}. den");
-days1.Add("KONEC");
-if (month30.Contains(poolOfMonths))
+if (mesic30.Contains(poleMesicu)) pocetDnu = 30;
+if (mesic31.Contains(poleMesicu)) pocetDnu = 31;
+if (mesic28.Contains(poleMesicu)) pocetDnu = 28;
+
+var teploty = new List<float>();
+var dny = new List<string>();
+
+for (int i = 1; i <= pocetDnu; i++) dny.Add($"{i}. den");
+dny.Add("Statistiky teplot");
+dny.Add("KONEC");
+while (cyklus) //vytvori cyklus na zapis teplot k dnum
 {
-    while(enblLoop)
-    {
-        var x = AnsiConsole.Prompt(
+    Console.Clear();
+
+    var cisalDnu = AnsiConsole.Prompt( //vytvoří tabulku s dny
         new SelectionPrompt<string>()
             .Title("Kolik stupňů bylo tento den")
-            .PageSize(14)
-            .MoreChoicesText("")
-            .AddChoices(days1));
-        
-        if (x == "KONEC")
-        {
-            enblLoop = false;
-            break;
-        }
-    }
-}
+            .PageSize(10)
+            .MoreChoicesText("[grey]Šipkami vybírej dny[/]")
+            .AddChoices(dny));
 
-
-int nbrdays2 = 31;
-var days2 = new List<string>();
-for (int i = 1; i <= nbrdays2; i++) days2.Add($"{i}. den");
-days2.Add("KONEC");
-if (month31.Contains(poolOfMonths))
-{
-    while (enblLoop)
+    if (cisalDnu == "KONEC") // pouze ukončí cyklus
     {
-        var x = AnsiConsole.Prompt(
-        new SelectionPrompt<string>()
-            .Title("Kolik bylo stupňů tento den")
-            .PageSize(14)
-            .MoreChoicesText("")
-            .AddChoices(days2));
-
-        if (x == "KONEC")
-        {
-            enblLoop = false;
-            break;
-        }
+        cyklus = false;
+        break;
     }
-}
 
-
-
-int nbrdays3 = 28;
-var days3 = new List<string>();
-for (int i = 1; i <= nbrdays3; i++) days3.Add($"{i}. den");
-days3.Add("KONEC");
-if (month28.Contains(poolOfMonths))
-{
-    while (enblLoop)
+    if (cisalDnu == "Statistiky teplot")
     {
-        var x = AnsiConsole.Prompt(
-        new SelectionPrompt<string>()
-            .Title("Kolik bylo stupňů tento den")
-            .PageSize(14)
-            .MoreChoicesText("")
-            .AddChoices(days3));
-
-        if(x=="KONEC")
-        {
-            enblLoop = false;
-            break;
-        }
+        Console.WriteLine($"Minimální teplota je {teploty.Min()}");
+        Console.WriteLine($"Maximální teplota je {teploty.Max()}");   //vytvoři statistiky pro zadané teploty a ukončí cyklus
+        Console.WriteLine($"Průměrná teplota je{teploty.Average()}");
+        cyklus = false;
+        break;
     }
+    float teplota = AnsiConsole.Ask<float>("Zadej tepotu: "); //zeptá se na teplotu kterou chcete zadat
+    int pozice = dny.IndexOf(cisalDnu); //vytvoří int pozice index pro list dny
+    teploty.Add(teplota); //umožní vytvoření statistik
+    dny[pozice] = $"{pozice + 1}. den = {teplota}°C"; //přepíše datum na datum s teplotou
 }
